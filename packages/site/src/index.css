@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,400;0,700;1,400;1,700&family=Averia+Serif+Libre:ital,wght@0,300;0,700;1,300;1,700&family=Caveat&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Spectral:ital,wght@0,300;0,600;1,300;1,600&display=swap&family=Noto+Sans+Symbols+2&display=swap");
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #1b1e23;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+em {
+  font-style: italic;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  /* text-decoration: inherit; */
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  counter-reset: h3-counter;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.1;
+  margin: 0;
+}
+button {
+  /* border-radius: 8px; */
+  border: 1px solid transparent;
+  padding: 2px 12px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1b1e23;
+  border: 2px solid rgba(255, 255, 255, 0.57);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.left {
+  text-align: left;
+}
+
+code {
+  background: black;
+  color: white;
+  padding: 2px 3px 1px 3px;
+  border-radius: 3px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+a:has(> h3):visited {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+a:has(> h3):link {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+a:has(> h3) {
+  color: inherit;
+  text-decoration: none;
+}
+
+h3 {
+  counter-increment: h3-counter;
+  position: relative;
+}
+
+a:hover > h3 {
+  text-decoration: underline;
+}
+
+a:hover > h3::before {
+  content: "# ";
+  position: absolute;
+  left: -2ch;
+}
+
+h3::before {
+  content: counter(h3-counter) ". ";
+  position: absolute;
+  left: -2ch;
+}
+
+#root {
+  max-width: 580px;
+  padding: 2rem;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+footer {
+  color: #888;
+  font-size: 0.825em;
+  margin-top: 7em;
+}
+
+footer a:link {
+  color: #888;
+  text-decoration: none;
+}
+
+footer a:visited {
+  color: #888;
+}
+
+details > pre {
+  margin: 0;
+  padding: 0;
+}
+
+details > summary {
+  padding: 0px 1ch;
+}
