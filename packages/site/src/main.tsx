@@ -5,10 +5,12 @@ import Readme from "./Readme.mdx";
 import "concrete.css";
 import "remixicon/fonts/remixicon.css";
 import "./index.css";
+
 // import "./modernist.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    {window.location.pathname}
     <Readme />
   </React.StrictMode>
 );
