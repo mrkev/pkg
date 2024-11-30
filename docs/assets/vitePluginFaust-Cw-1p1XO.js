@@ -1,5 +1,5 @@
 import"./modulepreload-polyfill-B5Qt9EMX.js";const s={html:`<h1>vite-plugin-faust</h1>
-<p>Vite plugin to transform Faust DSP files into React importable JavaScript (+ wasm) modules. Uses <a href="https://github.com/grame-cncm/faustwasm">faustwasm</a> under the hood.</p>
+<p>Vite plugin to transform Faust DSP files into importable JavaScript (+ WASM) modules. Uses <a href="https://github.com/grame-cncm/faustwasm">faustwasm</a> under the hood.</p>
 <h2>Installation</h2>
 <pre class="shiki" style="background-color: #2e3440"><code><span style="color: #4C566A"># npm</span>
 <span style="color: #D8DEE9FF">npm install --save-dev vite-plugin-faust</span>

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Vite plugin to transform Faust .dsp files into importable js/wasm modules",
   "author": "Kevin Chavez",
+  "homepage": "https://aykev.dev/pkg/vite-plugin-faust",
   "license": "MIT",
   "files": [
     "dist",

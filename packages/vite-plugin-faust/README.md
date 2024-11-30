@@ -1,6 +1,6 @@
 # vite-plugin-faust
 
-Vite plugin to transform Faust DSP files into React importable JavaScript (+ wasm) modules. Uses [faustwasm](https://github.com/grame-cncm/faustwasm) under the hood.
+Vite plugin to transform Faust DSP files into importable JavaScript (+ WASM) modules. Uses [faustwasm](https://github.com/grame-cncm/faustwasm) under the hood.
 
 ## Installation
 
