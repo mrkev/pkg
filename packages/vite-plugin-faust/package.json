@@ -1,0 +1,41 @@
+{
+  "name": "vite-plugin-faust",
+  "version": "0.0.0",
+  "description": "Vite plugin to transform Faust .dsp files into importable js/wasm modules",
+  "author": "Kevin Chavez",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "client.d.ts"
+  ],
+  "keywords": [
+    "vite",
+    "vite-plugin"
+  ],
+  "type": "module",
+  "main": "./dist/vitePluginFaust.js",
+  "types": "./dist/vitePluginFaust.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/vitePluginFaust.d.ts",
+      "import": "./dist/vitePluginFaust.js",
+      "require": "./dist/vitePluginFaust.cjs"
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc --module commonjs && mv dist/vitePluginFaust.js dist/vitePluginFaust.cjs && tsc"
+  },
+  "dependencies": {
+    "@grame/faustwasm": "^0.7.6"
+  },
+  "devDependencies": {
+    "rollup": "^4.27.4"
+  },
+  "peerDependencies": {
+    "vite": ">=2.6.0"
+  }
+}
