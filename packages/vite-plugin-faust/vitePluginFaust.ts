@@ -1,5 +1,5 @@
 import type { PluginOption, ResolvedConfig } from "vite";
-import { FaustLoader } from "./FaustLoader";
+import { FaustLoader } from "./FaustLoader.js";
 
 export default function faustLoader(): PluginOption {
   const loader = new FaustLoader();

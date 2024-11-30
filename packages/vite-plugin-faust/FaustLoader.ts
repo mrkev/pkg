@@ -3,15 +3,17 @@ import {
   FaustMonoDspGenerator,
   instantiateFaustModuleFromFile,
   LibFaust,
-} from "@grame/faustwasm/dist/esm/index";
+} from "@grame/faustwasm/dist/esm/index.js";
 import { readFile } from "fs/promises";
-import * as path from "path";
+import { createRequire } from "node:module";
+import path from "path";
 import type { PluginContext } from "rollup";
 import type { ResolvedConfig, ViteDevServer } from "vite";
 
-const FAUST_MODULE_PATH = path.join(
-  __dirname,
-  "./node_modules/@grame/faustwasm/libfaust-wasm/libfaust-wasm.js"
+const require = createRequire(import.meta.url);
+
+const FAUST_MODULE_PATH = require.resolve(
+  "@grame/faustwasm/libfaust-wasm/libfaust-wasm"
 );
 
 const isDsp = (id: string) => /\.(dsp)$/.test(id);
