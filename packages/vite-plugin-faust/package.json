@@ -1,9 +1,14 @@
 {
   "name": "vite-plugin-faust",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Vite plugin to transform Faust .dsp files into importable js/wasm modules",
   "author": "Kevin Chavez",
   "homepage": "https://aykev.dev/pkg/vite-plugin-faust",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npm/cli.git",
+    "directory": "packages/vite-plugin-faust"
+  },
   "license": "MIT",
   "files": [
     "dist",
@@ -11,7 +16,9 @@
   ],
   "keywords": [
     "vite",
-    "vite-plugin"
+    "vite-plugin",
+    "faust",
+    "webaudio"
   ],
   "type": "module",
   "main": "./dist/vitePluginFaust.js",
