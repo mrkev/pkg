@@ -115,8 +115,8 @@ importers:
   packages/vite-plugin-faust:
     dependencies:
       '@grame/faustwasm':
-        specifier: ^0.12.0
-        version: 0.12.0
+        specifier: ^0.15.7
+        version: 0.15.7
       rollup:
         specifier: ^4.20.0
         version: 4.60.1
@@ -1169,8 +1169,8 @@ packages:
     resolution: {integrity: sha512-iH1B076HoAshH1mLpHMgwdGeTs0CYwL0SPMkGuSebZrwBp16v415e9NZXg2jtrqPVQjf6IANe2Vtlr5KswtcZQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@grame/faustwasm@0.12.0':
-    resolution: {integrity: sha512-5o/k3NHOq4u2Bx1ok7OKkFc2MdxeU2DuBnv6D09eeIhfsvHyMfzPNt/5KSSkLD8s4ZfEI/bccV6it4ZjcHyl4w==}
+  '@grame/faustwasm@0.15.7':
+    resolution: {integrity: sha512-Y+fyQZQU4SLjxrdEK5SvOGWWutPRioWmbzcxhkU+zTAQ1lO+lfnlH5iIRDXdR1g52jpm6b/oyvBablHibEuVaA==}
     hasBin: true
 
   '@humanfs/core@0.19.1':
@@ -5357,7 +5357,7 @@ snapshots:
       '@eslint/core': 1.1.1
       levn: 0.4.1
 
-  '@grame/faustwasm@0.12.0':
+  '@grame/faustwasm@0.15.7':
     dependencies:
       '@types/emscripten': 1.39.13
 

@@ -3,6 +3,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { faustLoaderWasmImpl } from "./FaustLoader.js";
+import { LibFaustPkg } from "./LibFaustPkg.js";
 
 const datorro = `
 declare name "dattorro";
@@ -24,12 +25,13 @@ async function main() {
   }
 
   faustLoaderWasmImpl(
+    LibFaustPkg.cpTmp(),
     (name: string, source: string | Uint8Array, contentType?: string) => {
       writeFileSync(resolve(TEST_DIR, name), source);
       console.log("//// emitFile", name, source.length, contentType);
       return "__VITE_ASSET__TEST";
     },
     "dattorro",
-    datorro
+    datorro,
   );
 }

@@ -5,24 +5,11 @@ import {
   LibFaust,
 } from "@grame/faustwasm/dist/esm/index.js";
 import { readFile } from "fs/promises";
-import { createRequire } from "node:module";
 import path from "path";
 import type { PluginContext } from "rollup";
 import type { ResolvedConfig, ViteDevServer } from "vite";
-
-const require = createRequire(import.meta.url);
-
-const FAUST_MODULE_PATH =
-  require.resolve("@grame/faustwasm/libfaust-wasm/libfaust-wasm");
-
-const isDsp = (id: string) => /\.(dsp)$/.test(id);
-
-export function nullthrows<T>(val: T | null | undefined, message?: string): T {
-  if (val == null) {
-    throw new Error(message || `Expected ${val} to be non nil.`);
-  }
-  return val;
-}
+import { LibFaustPkg } from "./LibFaustPkg";
+import { isDspFilename, nullthrows } from "./utils";
 
 export const createBasePath = (base?: string) => {
   return (base?.replace(/\/$/, "") || "") + "/@faustloader/";
@@ -34,10 +21,12 @@ type OutPackage = {
 };
 
 export class FaustLoader {
-  public readonly name = "faust-lodaer-plugin";
+  constructor(
+    private resConfig: ResolvedConfig | null = null,
+    private virtPath: string | null = null,
+  ) {}
 
-  private resConfig: ResolvedConfig | null = null;
-  private virtPath: string | null = null;
+  libFaustPkg: LibFaustPkg | null = null;
 
   // Essentially a virtual file system for when running in dev. path -> source, content type
   // ie, /@faustloader/Panner.wasm -> { source: '...', "application/wasm" }
@@ -60,7 +49,7 @@ export class FaustLoader {
   }
 
   async transform(_src: string, id: string) {
-    if (!isDsp(id)) {
+    if (!isDspFilename(id)) {
       return;
     }
 
@@ -74,7 +63,7 @@ export class FaustLoader {
   }
 
   async load(id: string, context: PluginContext) {
-    if (!isDsp(id)) {
+    if (!isDspFilename(id)) {
       return;
     }
 
@@ -104,7 +93,12 @@ export class FaustLoader {
 
     const name = path.parse(id).name;
     const src = await readFile(id, { encoding: "utf-8" });
-    const files = await faustLoaderWasmImpl(emitFile, name, src);
+    const files = await faustLoaderWasmImpl(
+      nullthrows(this.libFaustPkg),
+      emitFile,
+      name,
+      src,
+    );
 
     this.outFiles.set(id, files);
 
@@ -238,6 +232,7 @@ export default async function create${name}Node(audioContext) {
 }
 
 export async function faustLoaderWasmImpl(
+  libfaustDir: LibFaustPkg,
   emitFile: (
     name: string,
     source: string | Uint8Array,
@@ -250,8 +245,10 @@ export async function faustLoaderWasmImpl(
     throw new Error("undefined or null name");
   }
 
-  // initialize the libfaust wasm
-  const faustModule = await instantiateFaustModuleFromFile(FAUST_MODULE_PATH);
+  const faustModule = await instantiateFaustModuleFromFile(
+    libfaustDir.jsFile(),
+  );
+
   const libFaust = new LibFaust(faustModule);
 
   // create compiler and generator
