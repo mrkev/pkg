@@ -18,5 +18,9 @@
         "targetName": "lint"
       }
     }
-  ]
+  ],
+  "analytics": false,
+  "tui": {
+    "enabled": false
+  }
 }
