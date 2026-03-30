@@ -12,9 +12,8 @@ import type { ResolvedConfig, ViteDevServer } from "vite";
 
 const require = createRequire(import.meta.url);
 
-const FAUST_MODULE_PATH = require.resolve(
-  "@grame/faustwasm/libfaust-wasm/libfaust-wasm"
-);
+const FAUST_MODULE_PATH =
+  require.resolve("@grame/faustwasm/libfaust-wasm/libfaust-wasm");
 
 const isDsp = (id: string) => /\.(dsp)$/.test(id);
 
@@ -82,13 +81,13 @@ export class FaustLoader {
     const emitFile = (
       name: string,
       source: string | Uint8Array,
-      contentType: string
+      contentType: string,
     ): string => {
       if (context.meta.watchMode) {
         const virtualFilePath = this.virtPath + name;
         this.virtFiles.set(virtualFilePath, { source, contentType });
         nullthrows(this.resConfig).logger.info(
-          `[load] watch emit: ${virtualFilePath}`
+          `[load] watch emit: ${virtualFilePath}`,
         );
         return virtualFilePath;
       } else {
@@ -116,7 +115,7 @@ export class FaustLoader {
     server.middlewares.use((req, res, next) => {
       if (req.url && req.url.indexOf("Panner") > -1) {
         nullthrows(this.resConfig).logger.info(
-          `[server] requesting ${req.url}`
+          `[server] requesting ${req.url}`,
         );
       }
 
@@ -128,12 +127,12 @@ export class FaustLoader {
 
         if (!file) {
           throw new Error(
-            `vite-faust-loader cannot find image with url "${req.url}" this is likely an internal error`
+            `vite-faust-loader cannot find image with url "${req.url}" this is likely an internal error`,
           );
         }
 
         nullthrows(this.resConfig).logger.info(
-          `[server] SENDING: ${req.url}, ${file.source.length}`
+          `[server] SENDING: ${req.url}, ${file.source.length}`,
         );
 
         // if (pluginOptions.removeMetadata === false) {
@@ -242,10 +241,10 @@ export async function faustLoaderWasmImpl(
   emitFile: (
     name: string,
     source: string | Uint8Array,
-    contentType: string
+    contentType: string,
   ) => string,
   name: string,
-  content: string
+  content: string,
 ): Promise<OutPackage> {
   if (name == null) {
     throw new Error("undefined or null name");
@@ -265,7 +264,7 @@ export async function faustLoaderWasmImpl(
     compiler,
     dspName,
     content,
-    ["-I", "libraries/"].join(" ")
+    ["-I", "libraries/"].join(" "),
   );
 
   // write resulting files
