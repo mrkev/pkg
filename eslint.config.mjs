@@ -1,45 +1,29 @@
-import { fixupConfigRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import tseslint from "typescript-eslint";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: eslint.configs.recommended,
-  allConfig: eslint.configs.all,
-});
 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+
   {
-    ignores: ["**/dist", "eslint.config.mjs", "docs"],
+    ignores: ["dist", "docs"],
   },
-  ...fixupConfigRules(
-    compat.extends(
-      "plugin:react-hooks/recommended",
-      "plugin:react/recommended",
-      "plugin:react/jsx-runtime"
-    )
-  ),
+
   {
     plugins: {
+      react,
+      "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
 
+    languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
+      globals: globals.browser,
     },
 
     settings: {
@@ -49,18 +33,14 @@ export default tseslint.config(
     },
 
     rules: {
+      ...react.configs.recommended.rules,
+      ...react.configs["jsx-runtime"].rules,
+      ...reactHooks.configs.recommended.rules,
+
       "@typescript-eslint/no-empty-function": [
         "warn",
-        {
-          allow: ["private-constructors"],
-        },
+        { allow: ["private-constructors"] },
       ],
-
-      "@typescript-eslint/ban-types": "off",
-      "no-useless-escape": "off",
-      indent: "off",
-      quotes: "off",
-      "no-unused-vars": "off",
 
       "@typescript-eslint/no-unused-vars": [
         "warn",
@@ -72,17 +52,13 @@ export default tseslint.config(
       ],
 
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-var-requires": "off",
-      "@typescript-eslint/ban-ts-ignore": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
-      "react/no-unescaped-entities": "off",
+      "no-useless-escape": "off",
       "no-case-declarations": "off",
       "react-refresh/only-export-components": [
         "warn",
-        {
-          allowConstantExport: true,
-        },
+        { allowConstantExport: true },
       ],
     },
-  }
+  },
 );
