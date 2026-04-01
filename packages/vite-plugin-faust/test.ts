@@ -1,5 +1,9 @@
 #!/usr/bin/env bun
 
+import {
+  instantiateFaustModuleFromFile,
+  LibFaust,
+} from "@grame/faustwasm/dist/esm/index.js";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { faustLoaderWasmImpl } from "./FaustLoader.js";
@@ -23,9 +27,12 @@ async function main() {
   if (!existsSync(TEST_DIR)) {
     mkdirSync(TEST_DIR);
   }
+  const pkg = LibFaustPkg.cpTmp();
+  const faustModule = await instantiateFaustModuleFromFile(pkg.jsFile());
+  const libFaust = new LibFaust(faustModule);
 
   faustLoaderWasmImpl(
-    LibFaustPkg.cpTmp(),
+    libFaust,
     (name: string, source: string | Uint8Array, contentType?: string) => {
       writeFileSync(resolve(TEST_DIR, name), source);
       console.log("//// emitFile", name, source.length, contentType);

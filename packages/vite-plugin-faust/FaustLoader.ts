@@ -7,7 +7,7 @@ import {
 import { readFile } from "fs/promises";
 import path from "path";
 import type { PluginContext } from "rollup";
-import type { ResolvedConfig, ViteDevServer } from "vite";
+import type { Logger, ResolvedConfig, ViteDevServer } from "vite";
 import { LibFaustPkg } from "./LibFaustPkg";
 import { isDspFilename, nullthrows } from "./utils";
 
@@ -21,12 +21,33 @@ type OutPackage = {
 };
 
 export class FaustLoader {
+  readonly logger: Logger;
   constructor(
-    private resConfig: ResolvedConfig | null = null,
-    private virtPath: string | null = null,
-  ) {}
+    private resConfig: ResolvedConfig,
+    private virtPath: string,
+    readonly libFaustPkg: LibFaustPkg,
+    readonly libFaust: LibFaust,
+  ) {
+    this.logger = this.resConfig.logger;
+    this.logger.info("[faust-lodaer-plugin] " + this.virtPath);
+    this.logger.info("[faust-lodaer-plugin] " + this.libFaustPkg.dirPath);
+  }
 
-  libFaustPkg: LibFaustPkg | null = null;
+  static async ofConfigResolved(
+    resolvedConfig: ResolvedConfig,
+    pkg: LibFaustPkg,
+  ) {
+    const faustModule = await instantiateFaustModuleFromFile(pkg.jsFile());
+    const libFaust = new LibFaust(faustModule);
+
+    return new FaustLoader(
+      resolvedConfig,
+      // ie, /@faustloader/foo/bar/base/path/
+      createBasePath(resolvedConfig.base),
+      pkg,
+      libFaust,
+    );
+  }
 
   // Essentially a virtual file system for when running in dev. path -> source, content type
   // ie, /@faustloader/Panner.wasm -> { source: '...', "application/wasm" }
@@ -39,28 +60,6 @@ export class FaustLoader {
   // If on dev-server, path looks like /@faustloader/Panner.wasm
   // If building, path looks like /assets/Panner-2lhy239.wasm (template looks like, " __VITE_ASSET__${fileHandle}__")
   private outFiles = new Map<string, OutPackage>();
-
-  configResolved(resolvedConfig: ResolvedConfig) {
-    // store the resolved config
-    this.resConfig = resolvedConfig;
-    // ie, /@faustloader/foo/bar/base/path/
-    this.virtPath = createBasePath(this.resConfig.base);
-    nullthrows(this.resConfig).logger.info("[config] " + this.virtPath);
-  }
-
-  async transform(_src: string, id: string) {
-    if (!isDspFilename(id)) {
-      return;
-    }
-
-    const name = path.parse(id).name;
-    const res = this.outFiles.get(id);
-
-    return {
-      map: null,
-      code: codeFor(res, name),
-    };
-  }
 
   async load(id: string, context: PluginContext) {
     if (!isDspFilename(id)) {
@@ -75,9 +74,7 @@ export class FaustLoader {
       if (context.meta.watchMode) {
         const virtualFilePath = this.virtPath + name;
         this.virtFiles.set(virtualFilePath, { source, contentType });
-        nullthrows(this.resConfig).logger.info(
-          `[load] watch emit: ${virtualFilePath}`,
-        );
+        this.logger.info(`[load] watch emit: ${virtualFilePath}`);
         return virtualFilePath;
       } else {
         const fileHandle = context.emitFile({
@@ -93,24 +90,22 @@ export class FaustLoader {
 
     const name = path.parse(id).name;
     const src = await readFile(id, { encoding: "utf-8" });
-    const files = await faustLoaderWasmImpl(
-      nullthrows(this.libFaustPkg),
-      emitFile,
-      name,
-      src,
-    );
+    const files = await faustLoaderWasmImpl(this.libFaust, emitFile, name, src);
 
     this.outFiles.set(id, files);
+    this.logger.info("[load] " + id);
 
-    nullthrows(this.resConfig).logger.info("[load] " + id);
+    // Return the JS module directly from load — no need for transform
+    return {
+      map: null,
+      code: codeFor(files, name),
+    };
   }
 
   configureServer(server: ViteDevServer) {
     server.middlewares.use((req, res, next) => {
       if (req.url && req.url.indexOf("Panner") > -1) {
-        nullthrows(this.resConfig).logger.info(
-          `[server] requesting ${req.url}`,
-        );
+        this.logger.info(`[server] requesting ${req.url}`);
       }
 
       if (this.virtPath && req.url?.startsWith(this.virtPath)) {
@@ -125,9 +120,7 @@ export class FaustLoader {
           );
         }
 
-        nullthrows(this.resConfig).logger.info(
-          `[server] SENDING: ${req.url}, ${file.source.length}`,
-        );
+        this.logger.info(`[server] SENDING: ${req.url}, ${file.source.length}`);
 
         // if (pluginOptions.removeMetadata === false) {
         //   image.withMetadata();
@@ -146,6 +139,37 @@ export class FaustLoader {
   }
 }
 
+export async function faustLoaderWasmImpl(
+  libFaust: LibFaust,
+  emitFile: (
+    name: string,
+    source: string | Uint8Array,
+    contentType: string,
+  ) => string,
+  name: string,
+  content: string,
+): Promise<OutPackage> {
+  // create compiler and generator
+  const compiler = new FaustCompiler(libFaust);
+  const generator = new FaustMonoDspGenerator();
+
+  // compile
+  const dspName = name;
+  await generator.compile(
+    compiler,
+    dspName,
+    content,
+    ["-I", "libraries/"].join(" "),
+  );
+
+  // write resulting files
+  const factory = nullthrows(generator.factory);
+  const wasmOut = emitFile(name + ".wasm", factory.code, "application/wasm");
+  const jsonOut = emitFile(name + ".json", factory.json, "application/json");
+
+  return { wasm: wasmOut, json: jsonOut };
+}
+
 function codeFor(res: OutPackage | undefined, name: string) {
   return /* javascript */ `
 /**
@@ -162,7 +186,7 @@ function codeFor(res: OutPackage | undefined, name: string) {
  * @param {number} voices - The number of voices to be used for polyphonic DSPs.
  * @returns {Object} - An object containing the Faust audio node and the DSP metadata.
  */
-const createFaustNode = async (audioContext, wasmPath, voices = 0) => {
+const createFaustNode = async (audioContext, wasmPath, jsonPath, voices = 0) => {
   // Import necessary Faust modules and data
   const { FaustMonoDspGenerator, FaustPolyDspGenerator } = await import(
     "@grame/faustwasm"
@@ -171,12 +195,10 @@ const createFaustNode = async (audioContext, wasmPath, voices = 0) => {
 
   // Load DSP metadata from JSON
   /** @type {FaustDspMeta} */
-  const dspMeta = await (await fetch(dspPath + ".json")).json();
+  const dspMeta = await (await fetch(jsonPath)).json();
 
   // Compile the DSP module from WebAssembly binary data
-  const dspModule = await WebAssembly.compileStreaming(
-    await fetch(dspPath + ".wasm")
-  );
+  const dspModule = await WebAssembly.compileStreaming(await fetch(wasmPath));
 
   // Create an object representing Faust DSP with metadata and module
   /** @type {FaustDspDistribution} */
@@ -227,47 +249,6 @@ const createFaustNode = async (audioContext, wasmPath, voices = 0) => {
 };
 
 export default async function create${name}Node(audioContext) {
-  return createFaustNode(audioContext, "${res?.wasm}");
+  return createFaustNode(audioContext, "${res?.wasm}", "${res?.json}");
 }`;
-}
-
-export async function faustLoaderWasmImpl(
-  libfaustDir: LibFaustPkg,
-  emitFile: (
-    name: string,
-    source: string | Uint8Array,
-    contentType: string,
-  ) => string,
-  name: string,
-  content: string,
-): Promise<OutPackage> {
-  if (name == null) {
-    throw new Error("undefined or null name");
-  }
-
-  const faustModule = await instantiateFaustModuleFromFile(
-    libfaustDir.jsFile(),
-  );
-
-  const libFaust = new LibFaust(faustModule);
-
-  // create compiler and generator
-  const compiler = new FaustCompiler(libFaust);
-  const generator = new FaustMonoDspGenerator();
-
-  // compile
-  const dspName = name;
-  await generator.compile(
-    compiler,
-    dspName,
-    content,
-    ["-I", "libraries/"].join(" "),
-  );
-
-  // write resulting files
-  const factory = nullthrows(generator.factory);
-  const wasmOut = emitFile(name + ".wasm", factory.code, "application/wasm");
-  const jsonOut = emitFile(name + ".json", factory.json, "application/json");
-
-  return { wasm: wasmOut, json: jsonOut };
 }

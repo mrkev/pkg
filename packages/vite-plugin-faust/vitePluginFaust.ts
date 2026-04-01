@@ -1,36 +1,36 @@
 import type { PluginOption, ResolvedConfig } from "vite";
 import { FaustLoader } from "./FaustLoader.js";
 import { LibFaustPkg } from "./LibFaustPkg.js";
+import { nullthrows } from "./utils.js";
 
 export default function faustLoader(): PluginOption {
-  const loader = new FaustLoader();
+  const context = {
+    _loader: null as FaustLoader | null,
+    loader() {
+      return nullthrows(this._loader);
+    },
+  };
+
   return {
     name: "faust-lodaer-plugin",
 
-    configResolved(resolvedConfig: ResolvedConfig) {
-      return loader.configResolved(resolvedConfig);
-    },
-
-    async transform(_src, id) {
-      return loader.transform(_src, id);
+    async configResolved(resolvedConfig: ResolvedConfig) {
+      context._loader = await FaustLoader.ofConfigResolved(
+        resolvedConfig,
+        LibFaustPkg.cpTmp(),
+      );
     },
 
     async load(id: string) {
-      console.log("this", this);
-      return loader.load(id, this);
-    },
-
-    buildStart() {
-      const libfaustTmp = LibFaustPkg.cpTmp();
-      loader.libFaustPkg = libfaustTmp;
+      return context.loader().load(id, this);
     },
 
     buildEnd() {
-      loader.libFaustPkg?.cleanup();
+      context.loader().libFaustPkg.cleanup();
     },
 
     configureServer(server) {
-      return loader.configureServer(server);
+      return context.loader().configureServer(server);
     },
   };
 }
