@@ -17,7 +17,6 @@
     "isolatedModules": true,
     "noImplicitOverride": true,
     "types": [],
-    //
     "outDir": "./dist",
     "declaration": true,
     "skipLibCheck": true,

@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-B5Qt9EMX.js";const s={html:`<h1>vite-plugin-faust</h1>
+import"./modulepreload-polyfill-wMinxHhO.js";var e={html:`<h1>vite-plugin-faust</h1>
 <p>Vite plugin to transform Faust DSP files into importable JavaScript (+ WASM) modules. Uses <a href="https://github.com/grame-cncm/faustwasm">faustwasm</a> under the hood.</p>
 <h2>Installation</h2>
 <pre class="shiki" style="background-color: #2e3440"><code><span style="color: #4C566A"># npm</span>
@@ -30,4 +30,4 @@ import"./modulepreload-polyfill-B5Qt9EMX.js";const s={html:`<h1>vite-plugin-faus
 <p>None at the moment!</p>
 <h2>License</h2>
 <p>MIT</p>
-`,metadata:{},filename:"README.md",path:"/Users/kevin/Develop/play_play/pkg/packages/vite-plugin-faust/README.md"};document.getElementById("root").innerHTML=s.html;
+`,metadata:{},filename:`README.md`,path:`/Users/kevin/Develop/play_play/pkg/packages/vite-plugin-faust/README.md`};document.getElementById(`root`).innerHTML=e.html;
