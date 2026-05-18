@@ -11,5 +11,5 @@ declare module "*.dsp" {
   >;
 
   const loader: ProcessorLoader;
-  export = loader;
+  export default loader;
 }

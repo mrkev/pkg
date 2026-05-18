@@ -26,8 +26,7 @@
   "exports": {
     ".": {
       "types": "./dist/vitePluginFaust.d.ts",
-      "import": "./dist/vitePluginFaust.js",
-      "require": "./dist/vitePluginFaust.cjs"
+      "import": "./dist/vitePluginFaust.js"
     },
     "./client": {
       "types": "./client.d.ts"
@@ -38,8 +37,10 @@
     "build": "tsup vitePluginFaust.ts --dts --format esm"
   },
   "dependencies": {
+    "shortid": "^2.2.17"
+  },
+  "devDependencies": {
     "@types/shortid": "^2.2.0",
-    "shortid": "^2.2.17",
     "tsup": "^8.5.1"
   },
   "peerDependencies": {
