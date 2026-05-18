@@ -8,8 +8,8 @@ import { readFile } from "fs/promises";
 import path from "path";
 import type { PluginContext } from "rollup";
 import type { Logger, ResolvedConfig, ViteDevServer } from "vite";
-import { LibFaustPkg } from "./LibFaustPkg";
-import { isDspFilename, nullthrows } from "./utils";
+import { LibFaustPkg } from "./LibFaustPkg.js";
+import { isDspFilename, nullthrows } from "./utils.js";
 
 export const createBasePath = (base?: string) => {
   return (base?.replace(/\/$/, "") || "") + "/@faustloader/";

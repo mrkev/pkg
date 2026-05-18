@@ -25,6 +25,7 @@ test-tmp
 *.sw?
 
 
-
 .nx/cache
 .nx/workspace-data
+
+notes/

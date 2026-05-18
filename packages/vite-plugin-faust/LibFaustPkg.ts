@@ -1,7 +1,7 @@
 import { rmSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "path";
-import { asTmpDirSync } from "./utils";
+import { asTmpDirSync } from "./utils.js";
 
 const require = createRequire(import.meta.url);
 const FAUST_MODULE_PATH =

@@ -1,9 +1,16 @@
-import type { PluginOption, ResolvedConfig } from "vite";
 import { FaustLoader } from "./FaustLoader.js";
 import { LibFaustPkg } from "./LibFaustPkg.js";
 import { nullthrows } from "./utils.js";
 
-export default function faustLoader(): PluginOption {
+type FaustPlugin = {
+  name: string;
+  configResolved(config: unknown): void | Promise<void>;
+  load(id: string): Promise<{ map: null; code: string } | undefined>;
+  buildEnd(): void;
+  configureServer(server: unknown): void;
+};
+
+export default function faustLoader(): FaustPlugin {
   const context = {
     _loader: null as FaustLoader | null,
     loader() {
@@ -14,15 +21,18 @@ export default function faustLoader(): PluginOption {
   return {
     name: "faust-lodaer-plugin",
 
-    async configResolved(resolvedConfig: ResolvedConfig) {
+    async configResolved(resolvedConfig) {
       context._loader = await FaustLoader.ofConfigResolved(
-        resolvedConfig,
+        resolvedConfig as Parameters<typeof FaustLoader.ofConfigResolved>[0],
         LibFaustPkg.cpTmp(),
       );
     },
 
     async load(id: string) {
-      return context.loader().load(id, this);
+      return context.loader().load(
+        id,
+        this as unknown as Parameters<FaustLoader["load"]>[1],
+      );
     },
 
     buildEnd() {
@@ -30,7 +40,9 @@ export default function faustLoader(): PluginOption {
     },
 
     configureServer(server) {
-      return context.loader().configureServer(server);
+      return context.loader().configureServer(
+        server as Parameters<FaustLoader["configureServer"]>[0],
+      );
     },
   };
 }
