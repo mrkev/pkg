@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 // import rehypeSlug from "rehype-slug";
 // import { Mode, plugin as markdown } from "vite-plugin-markdown";
 import { resolve } from "path";
-import markdownPlugin from "@mheedev/rollup-plugin-markdown";
+import markdownPlugin from "@mrkev/vite-plugin-markdown";
 
 // Builds the site
 // https://vitejs.dev/config/

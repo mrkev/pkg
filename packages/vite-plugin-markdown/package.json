@@ -1,0 +1,49 @@
+{
+  "name": "@mrkev/vite-plugin-markdown",
+  "version": "0.1.0",
+  "description": "Vite plugin to import Markdown files as HTML or structured data",
+  "author": "Kevin Chavez",
+  "homepage": "https://aykev.dev/pkg/vite-plugin-markdown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npm/cli.git",
+    "directory": "packages/vite-plugin-markdown"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "markdown"
+  ],
+  "type": "module",
+  "main": "./dist/vitePluginMarkdown.js",
+  "types": "./dist/vitePluginMarkdown.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/vitePluginMarkdown.d.ts",
+      "import": "./dist/vitePluginMarkdown.js"
+    }
+  },
+  "scripts": {
+    "dev": "npm run build -- --watch",
+    "build": "tsup vitePluginMarkdown.ts --dts --format esm"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "vite": "^8.0.4"
+  },
+  "peerDependencies": {
+    "vite": ">=2.6.0"
+  },
+  "dependencies": {
+    "@rollup/pluginutils": "^5.3.0",
+    "front-matter": "^4.0.2",
+    "markdown-it": "^14.1.1",
+    "shiki": "^4.0.2"
+  }
+}

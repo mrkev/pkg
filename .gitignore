@@ -28,4 +28,4 @@ test-tmp
 .nx/cache
 .nx/workspace-data
 
-notes/
+.notes/
