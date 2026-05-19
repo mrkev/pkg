@@ -1,3 +1,7 @@
+---
+title: "vite-plugin-faust: transform Faust .dsp files into importable js/wasm modules"
+---
+
 # vite-plugin-faust
 
 Vite plugin to transform Faust DSP files into importable JavaScript (+ WASM) modules. Uses [faustwasm](https://github.com/grame-cncm/faustwasm) under the hood.

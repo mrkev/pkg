@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@mrkev/vite-plugin-markdown": "workspace:*",
+    "vite-plugin-monorepo-site": "workspace:*",
     "react-router": "^7.14.0",
     "vite-plugin-markdown": "^2.2.0"
   }

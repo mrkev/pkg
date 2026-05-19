@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 // import rehypeSlug from "rehype-slug";
 // import { Mode, plugin as markdown } from "vite-plugin-markdown";
 import { resolve } from "path";
-import markdownPlugin from "@mrkev/vite-plugin-markdown";
+import monorepoSitePlugin from "vite-plugin-monorepo-site";
 
 // Builds the site
 // https://vitejs.dev/config/
@@ -16,7 +16,13 @@ export default defineConfig({
   plugins: [
     react(),
     // markdown({ mode: [Mode.HTML] }),
-    markdownPlugin(),
+    // markdownPlugin(),
+    monorepoSitePlugin({
+      pages: {
+        include: [resolve(__dirname, "..", "vite-plugin-faust")],
+        template: "template.html",
+      },
+    }),
     // mdx({
     //   format: "mdx",
     //   recmaPlugins: [highlight, rehypeSlug],
@@ -27,7 +33,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         site: "./index.html",
-        vitePluginFaust: resolve(__dirname, "./vite-plugin-faust.html"),
+        // vitePluginFaust: resolve(__dirname, "./vite-plugin-faust.html"),
       },
     },
     // minify: false,
