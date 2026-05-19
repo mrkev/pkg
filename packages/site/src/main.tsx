@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import pages from "virtual:markdown-pages";
+import packages from "virtual:monorepo-packages";
 // import "normalize.css";
 // import "concrete.css";
 import "remixicon/fonts/remixicon.css";
@@ -15,16 +15,23 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <i className="ri-github-fill"></i> mrkev/pkg
       </a>
       <ul>
-        {pages
-          .filter((page) => page.url.endsWith("/index.html"))
-          .map((page) => {
-            const dir = page.url.split("/").at(-2)!;
-            return (
-              <li key={page.url}>
-                <a href={page.url.replace(/\/index\.html$/, "")}>{dir}</a>
-              </li>
-            );
-          })}
+        {packages.map((pkg) => {
+          const indexPage = pkg.pages.find((p) =>
+            p.url.endsWith("/index.html"),
+          );
+          if (!indexPage) return null;
+          const dir = indexPage.url.split("/").at(-2)!;
+          return (
+            <li key={indexPage.url}>
+              <a href={indexPage.url.replace(/\/index\.html$/, "")}>{dir}</a>{" "}
+              {pkg.repository && (
+                <>
+                  (<a href={pkg.repository}>repo</a>)
+                </>
+              )}
+            </li>
+          );
+        })}
       </ul>
       <footer>
         Built by <a href="http://aykev.dev">Kevin Chavez</a> ·

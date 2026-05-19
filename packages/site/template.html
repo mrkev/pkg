@@ -3,27 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="twitter:card" content="summary" />
-    <meta property="og:image" content="/favicon.ico" />
-    <meta property="og:title" content="{{ page.title }}" />
-    <meta property="og:description" content="{{ page.description }}" />
+    {{ page.meta }}
     <link rel="stylesheet" href="https://unpkg.com/normalize.css" />
     <link rel="stylesheet" href="https://unpkg.com/magick.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css"
     />
-    <title>{{ page.title }}</title>
+    <style>
+      footer a:has(i) {
+        text-decoration: none;
+      }
+    </style>
   </head>
 
   <body>
     <main id="root">{{ page.content }}</main>
     <footer>
       Built by <a href="http://aykev.dev">Kevin Chavez</a> ·
-      <a href="https://twitter.com/aykev"> <i class="ri-twitter-fill"></i> </a>
-      <a href="https://github.com/mrkev">
-        <i class="ri-github-fill"></i>
-      </a>
+      <a href="https://twitter.com/aykev" aria-label="Twitter"
+        ><i class="ri-twitter-fill" aria-hidden="true"></i
+      ></a>
+      <a href="https://github.com/mrkev" aria-label="GitHub"
+        ><i class="ri-github-fill" aria-hidden="true"></i
+      ></a>
     </footer>
   </body>
 </html>

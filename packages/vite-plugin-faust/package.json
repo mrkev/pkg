@@ -6,7 +6,7 @@
   "homepage": "https://aykev.dev/pkg/vite-plugin-faust",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/npm/cli.git",
+    "url": "git+https://github.com/mrkev/pkg.git",
     "directory": "packages/vite-plugin-faust"
   },
   "license": "MIT",

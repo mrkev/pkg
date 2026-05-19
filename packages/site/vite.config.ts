@@ -18,7 +18,7 @@ export default defineConfig({
     // markdown({ mode: [Mode.HTML] }),
     // markdownPlugin(),
     monorepoSitePlugin({
-      pages: {
+      packages: {
         include: [resolve(__dirname, "..", "vite-plugin-faust")],
         template: "template.html",
       },
