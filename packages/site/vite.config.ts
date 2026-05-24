@@ -9,6 +9,10 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import monorepoSitePlugin from "vite-plugin-monorepo-site";
 
+const INCLUDE = ["vite-plugin-faust", "vite-plugin-monorepo-site"].map((p) =>
+  resolve(__dirname, "..", p),
+);
+
 // Builds the site
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +23,7 @@ export default defineConfig({
     // markdownPlugin(),
     monorepoSitePlugin({
       packages: {
-        include: [resolve(__dirname, "..", "vite-plugin-faust")],
+        include: INCLUDE,
         template: "template.html",
       },
     }),

@@ -1,4 +1,3 @@
-import { createFilter, type FilterPattern } from "@rollup/pluginutils";
 import frontmatter from "front-matter";
 import fs from "fs";
 import MarkdownIt from "markdown-it";
@@ -35,9 +34,6 @@ export type PackagesOptions = {
 
 export type Options = {
   theme?: BundledTheme;
-  /** FilterPattern for .md transform imports (default: **\/*.md) */
-  include?: FilterPattern;
-  exclude?: FilterPattern;
   markdown?: MarkdownItOptions;
   /** When provided, enables static HTML page generation */
   packages?: PackagesOptions;
@@ -221,7 +217,6 @@ async function resolveDirectories(
 }
 
 export default function monorepoSitePlugin(options: Options = {}): Plugin {
-  const filter = createFilter(options.include ?? ["**/*.md"], options.exclude);
   const theme = options.theme ?? "nord";
 
   const highlighterPromise = createHighlighter({
@@ -342,22 +337,6 @@ export default function monorepoSitePlugin(options: Options = {}): Plugin {
 
     async buildStart() {
       buildResult = await build(resolvedConfig?.root ?? process.cwd());
-    },
-
-    async transform(code: string, id: string) {
-      if (!filter(id) || path.extname(id) !== ".md") return;
-      const md = await getMd();
-      const parsed = frontmatter<Record<string, unknown>>(code);
-      const html = md.render(parsed.body);
-      return {
-        code: `export default ${JSON.stringify({
-          html,
-          metadata: parsed.attributes,
-          filename: path.basename(id),
-          path: id,
-        })}`,
-        map: { mappings: "" },
-      };
     },
 
     resolveId(id) {
