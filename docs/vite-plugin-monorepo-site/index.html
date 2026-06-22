@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vite-plugin-monorepo-site/README</title>
+    <meta property="og:title" content="vite-plugin-monorepo-site/README" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="vite-plugin-monorepo-site/README" />
+    <meta name="description" content="Vite plugin to generate a static site from monorepo package directories" />
+    <meta property="og:description" content="Vite plugin to generate a static site from monorepo package directories" />
+    <meta name="twitter:description" content="Vite plugin to generate a static site from monorepo package directories" />
+    <meta name="author" content="Kevin Chavez" />
+    <meta name="keywords" content="vite, vite-plugin, markdown, monorepo, static-site" />
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css" />
+    <link rel="stylesheet" href="https://unpkg.com/magick.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css"
+    />
+    <style>
+      footer a:has(i) {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main id="root"><h1>vite-plugin-monorepo-site</h1>
+<p>Vite plugin that generates static HTML pages from markdown files in monorepo package directories, with package metadata and a virtual module index available for building a site landing page.</p>
+<h2>Install</h2>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#88C0D0">npm</span><span style="color:#A3BE8C"> install</span><span style="color:#A3BE8C"> vite-plugin-monorepo-site</span></span>
+<span class="line"></span></code></pre>
+<h2>Usage</h2>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#616E88">// vite.config.ts</span></span>
+<span class="line"><span style="color:#81A1C1">import</span><span style="color:#D8DEE9"> monorepoSitePlugin</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">vite-plugin-monorepo-site</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#81A1C1">import</span><span style="color:#ECEFF4"> {</span><span style="color:#D8DEE9"> resolve</span><span style="color:#ECEFF4"> }</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">path</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#81A1C1">import</span><span style="color:#ECEFF4"> {</span><span style="color:#D8DEE9"> defineConfig</span><span style="color:#ECEFF4"> }</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">vite</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#81A1C1">export</span><span style="color:#81A1C1"> default</span><span style="color:#88C0D0"> defineConfig</span><span style="color:#D8DEE9FF">(</span><span style="color:#ECEFF4">{</span></span>
+<span class="line"><span style="color:#D8DEE9">  plugins</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9FF"> [</span></span>
+<span class="line"><span style="color:#88C0D0">    monorepoSitePlugin</span><span style="color:#D8DEE9FF">(</span><span style="color:#ECEFF4">{</span></span>
+<span class="line"><span style="color:#D8DEE9">      packages</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#D8DEE9">        include</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9FF"> [</span></span>
+<span class="line"><span style="color:#88C0D0">          resolve</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">__dirname</span><span style="color:#ECEFF4">,</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">../my-package</span><span style="color:#ECEFF4">"</span><span style="color:#D8DEE9FF">)</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#88C0D0">          resolve</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">__dirname</span><span style="color:#ECEFF4">,</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">../another-package</span><span style="color:#ECEFF4">"</span><span style="color:#D8DEE9FF">)</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9FF">        ]</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9">        template</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">template.html</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">      },</span></span>
+<span class="line"><span style="color:#ECEFF4">    }</span><span style="color:#D8DEE9FF">)</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  ]</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span></code></pre>
+<h2>Options</h2>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> Options</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#616E88">  /** Shiki theme for syntax highlighting (default: "nord") */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  theme</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> BundledTheme</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">  /** FilterPattern for .md transform imports (default: **\/*.md) */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  include</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> FilterPattern</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  exclude</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> FilterPattern</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  markdown</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> MarkdownItOptions</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">  /** When provided, enables static HTML page generation */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  packages</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> PackagesOptions</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> PackagesOptions</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#616E88">  /** Directories to scan for markdown files. Supports glob patterns. */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  include</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> string</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">  /** Path to an HTML template file relative to the Vite root. */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  template</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">  /** Output subdirectory within build.outDir. */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  outDir</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">  /** Filenames to exclude (case-insensitive). Defaults to DEFAULT_PAGES_EXCLUDE. */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  exclude</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span></code></pre>
+<h3>Template</h3>
+<p>The template file uses <code>{{ page.X }}</code> interpolation. Available variables:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{ page.meta }}</code></td>
+<td>Full block of standard HTML meta tags (title, og:title, description, etc.)</td>
+</tr>
+<tr>
+<td><code>{{ page.content }}</code></td>
+<td>Rendered HTML content (not escaped)</td>
+</tr>
+<tr>
+<td><code>{{ page.title }}</code></td>
+<td>Page title (from frontmatter, or derived from filename)</td>
+</tr>
+<tr>
+<td><code>{{ page.description }}</code></td>
+<td>From frontmatter or <code>package.json</code></td>
+</tr>
+<tr>
+<td><code>{{ page.author }}</code></td>
+<td>From frontmatter or <code>package.json</code></td>
+</tr>
+<tr>
+<td><code>{{ page.keywords }}</code></td>
+<td>From frontmatter or <code>package.json</code> (comma-separated)</td>
+</tr>
+<tr>
+<td><code>{{ page.version }}</code></td>
+<td>From <code>package.json</code></td>
+</tr>
+<tr>
+<td><code>{{ page.homepage }}</code></td>
+<td>From <code>package.json</code></td>
+</tr>
+<tr>
+<td><code>{{ page.license }}</code></td>
+<td>From <code>package.json</code></td>
+</tr>
+<tr>
+<td><code>{{ page.repository }}</code></td>
+<td>From <code>package.json</code> (normalized URL; deep-links to <code>directory</code> if set)</td>
+</tr>
+<tr>
+<td>any frontmatter key</td>
+<td>Any other frontmatter field</td>
+</tr>
+</tbody>
+</table>
+<p>Frontmatter values override <code>package.json</code> values. <code>{{ page.meta }}</code> and <code>{{ page.content }}</code> are inserted as raw HTML; all other variables are HTML-escaped.</p>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#616E88">&#x3C;!-- template.html --></span></span>
+<span class="line"><span style="color:#81A1C1">&#x3C;!doctype</span><span style="color:#8FBCBB"> html</span><span style="color:#81A1C1">></span></span>
+<span class="line"><span style="color:#81A1C1">&#x3C;html</span><span style="color:#8FBCBB"> lang</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">en</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">></span></span>
+<span class="line"><span style="color:#81A1C1">  &#x3C;head></span></span>
+<span class="line"><span style="color:#81A1C1">    &#x3C;meta</span><span style="color:#8FBCBB"> charset</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">UTF-8</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1"> /></span></span>
+<span class="line"><span style="color:#81A1C1">    &#x3C;meta</span><span style="color:#8FBCBB"> name</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">viewport</span><span style="color:#ECEFF4">"</span><span style="color:#8FBCBB"> content</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">width=device-width, initial-scale=1.0</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1"> /></span></span>
+<span class="line"><span style="color:#D8DEE9FF">    {{ page.meta }}</span></span>
+<span class="line"><span style="color:#81A1C1">    &#x3C;link</span><span style="color:#8FBCBB"> rel</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">stylesheet</span><span style="color:#ECEFF4">"</span><span style="color:#8FBCBB"> href</span><span style="color:#ECEFF4">=</span><span style="color:#ECEFF4">"</span><span style="color:#A3BE8C">https://unpkg.com/normalize.css</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1"> /></span></span>
+<span class="line"><span style="color:#81A1C1">  &#x3C;/head></span></span>
+<span class="line"><span style="color:#81A1C1">  &#x3C;body></span></span>
+<span class="line"><span style="color:#D8DEE9FF">    {{ page.content }}</span></span>
+<span class="line"><span style="color:#81A1C1">  &#x3C;/body></span></span>
+<span class="line"><span style="color:#81A1C1">&#x3C;/html></span></span>
+<span class="line"></span></code></pre>
+<h3>README → index.html</h3>
+<p>If a directory contains <code>README.md</code> (case-insensitive) and no <code>index.html</code>, it is output as <code>index.html</code> instead of <code>readme.html</code>.</p>
+<h3>Default excludes</h3>
+<p>The following filenames are excluded by default (<code>DEFAULT_PAGES_EXCLUDE</code>):</p>
+<ul>
+<li><code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>, <code>COPILOT.md</code> — coding agent instruction files</li>
+<li><code>CONTRIBUTING.md</code>, <code>SECURITY.md</code>, <code>CODE_OF_CONDUCT.md</code>, <code>CHANGELOG.md</code></li>
+</ul>
+<p>Pass a custom <code>exclude</code> array to override this list entirely.</p>
+<h2>Virtual module</h2>
+<p>Import <code>virtual:monorepo-packages</code> anywhere in your app to get metadata for all packages and their generated pages:</p>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">import</span><span style="color:#D8DEE9"> packages</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">virtual:monorepo-packages</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">// MonorepoPackage[]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D8DEE9">packages</span><span style="color:#ECEFF4">.</span><span style="color:#88C0D0">forEach</span><span style="color:#D8DEE9FF">(</span><span style="color:#ECEFF4">(</span><span style="color:#D8DEE9">pkg</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1"> =></span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#D8DEE9">  console</span><span style="color:#ECEFF4">.</span><span style="color:#88C0D0">log</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">pkg</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">name</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span><span style="color:#616E88">        // from package.json</span></span>
+<span class="line"><span style="color:#D8DEE9">  console</span><span style="color:#ECEFF4">.</span><span style="color:#88C0D0">log</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">pkg</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">description</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span><span style="color:#616E88"> // from package.json</span></span>
+<span class="line"><span style="color:#D8DEE9">  console</span><span style="color:#ECEFF4">.</span><span style="color:#88C0D0">log</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">pkg</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">repository</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span><span style="color:#616E88">  // normalized URL</span></span>
+<span class="line"><span style="color:#D8DEE9">  console</span><span style="color:#ECEFF4">.</span><span style="color:#88C0D0">log</span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9">pkg</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">pages</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span><span style="color:#616E88">       // PageMeta[] for this package</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span></code></pre>
+<p>A named <code>pages</code> export provides a flat list across all packages:</p>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">import</span><span style="color:#ECEFF4"> {</span><span style="color:#D8DEE9"> pages</span><span style="color:#ECEFF4"> }</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">virtual:monorepo-packages</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#616E88">// PageMeta[]</span></span>
+<span class="line"></span></code></pre>
+<p>Add a type declaration so TypeScript recognizes the imports:</p>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#616E88">// virtual.d.ts</span></span>
+<span class="line"><span style="color:#81A1C1">declare</span><span style="color:#81A1C1"> module</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">virtual:monorepo-packages</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#81A1C1">  import</span><span style="color:#81A1C1"> type</span><span style="color:#ECEFF4"> {</span><span style="color:#D8DEE9"> MonorepoPackage</span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> PageMeta</span><span style="color:#ECEFF4"> }</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">vite-plugin-monorepo-site</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#81A1C1">  const</span><span style="color:#D8DEE9"> packages</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> MonorepoPackage</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#81A1C1">  export</span><span style="color:#81A1C1"> default</span><span style="color:#D8DEE9"> packages</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#81A1C1">  export</span><span style="color:#81A1C1"> const</span><span style="color:#D8DEE9"> pages</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> PageMeta</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span></span>
+<span class="line"></span></code></pre>
+<h3>Types</h3>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> MonorepoPackage</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  name</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  description</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  version</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  homepage</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  license</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  author</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  keywords</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  repository</span><span style="color:#81A1C1">?:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  pages</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> PageMeta</span><span style="color:#D8DEE9FF">[]</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> PageMeta</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#616E88">  /** Relative URL to the generated page, e.g. "./my-package/index.html" */</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  url</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  title</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> string</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">  attributes</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Record</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">string</span><span style="color:#ECEFF4">,</span><span style="color:#8FBCBB"> unknown</span><span style="color:#ECEFF4">></span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span></code></pre>
+<h2>Markdown imports</h2>
+<p>Without <code>packages</code> configured, the plugin still works as a transform — <code>.md</code> files imported in your app are converted to JS modules:</p>
+<pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">import</span><span style="color:#D8DEE9"> doc</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">./README.md</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D8DEE9">doc</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">html</span><span style="color:#81A1C1">;</span><span style="color:#616E88">      // rendered HTML string</span></span>
+<span class="line"><span style="color:#D8DEE9">doc</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">metadata</span><span style="color:#81A1C1">;</span><span style="color:#616E88">  // frontmatter attributes</span></span>
+<span class="line"><span style="color:#D8DEE9">doc</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">filename</span><span style="color:#81A1C1">;</span><span style="color:#616E88">  // "README.md"</span></span>
+<span class="line"><span style="color:#D8DEE9">doc</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">path</span><span style="color:#81A1C1">;</span><span style="color:#616E88">      // absolute file path</span></span>
+<span class="line"></span></code></pre>
+</main>
+    <footer>
+      Built by <a href="http://aykev.dev">Kevin Chavez</a> ·
+      <a href="https://twitter.com/aykev" aria-label="Twitter"
+        ><i class="ri-twitter-fill" aria-hidden="true"></i
+      ></a>
+      <a href="https://github.com/mrkev" aria-label="GitHub"
+        ><i class="ri-github-fill" aria-hidden="true"></i
+      ></a>
+    </footer>
+  </body>
+</html>
