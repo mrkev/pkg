@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-faust",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Vite plugin to transform Faust .dsp files into importable js/wasm modules",
   "author": "Kevin Chavez",
   "homepage": "https://aykev.dev/pkg/vite-plugin-faust",
@@ -40,11 +40,12 @@
     "shortid": "^2.2.17"
   },
   "devDependencies": {
+    "@grame/faustwasm": "0.16.6",
     "@types/shortid": "^2.2.0",
     "tsup": "^8.5.1"
   },
   "peerDependencies": {
-    "@grame/faustwasm": "^0.15.7",
+    "@grame/faustwasm": ">=0.15.7 <0.17",
     "rollup": "^4.20.0",
     "vite": ">=2.6.0"
   }
