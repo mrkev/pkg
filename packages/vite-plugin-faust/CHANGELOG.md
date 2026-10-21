@@ -1,5 +1,11 @@
 # vite-plugin-faust
 
+## 2.3.0
+
+### Minor Changes
+
+- Widen the `@grame/faustwasm` peer range to `>=0.15.7 <0.20` so apps on 0.19.x are supported. 0.19 added an optional `time` parameter to `setParamValue`, `midiMessage`, `ctrlChange`, and `pitchWheel` on `IFaustMonoWebAudioNode`, which `client.d.ts` uses to type the `.dsp` loader's `faustNode`. The plugin now develops against 0.19.0 and builds with tsup 9. No runtime behavior changed.
+
 ## 2.2.0
 
 ### Minor Changes
